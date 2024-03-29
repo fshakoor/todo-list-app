@@ -5,9 +5,17 @@
     --white: white;
 }
 
+@font-face {
+    font-family: 'Roboto';
+    src: url('./Roboto-Regular.ttf') format('Roboto-Regular');
+    /* font-weight: 600; */
+    /* font-style: normal; */
+  }
+
 body {
     height: 100vh;
     margin: 0;
+    font-family: 'Roboto','Helvetica';
 }
 
 .main {
@@ -38,7 +46,107 @@ body {
 .sidebar {
     border-right: 1px solid var(--ds-border, #091E4224);
     background-color: var(--dark-grey);
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+    padding-top: 1vw;
 }
-.content {
+
+.btn {
+    padding: 10px;
+    background-color: var(--dark-grey);
+    color: var(--white);
+    border: 0;
+    margin: 0 25px 0 25px;
+    font-size: 1rem;
+}
+
+.active {
+    background-color: var(--light-grey);
+    font-weight: 600;
+}
+
+.btn:hover {
+    cursor: pointer;
     background-color: var(--light-grey);
 }
+
+.project-divider {
+    color: var(--white);
+    font-size: 1.5rem;
+    font-weight: 900;
+    padding: 1vw 0 1vw 2vw;
+}
+
+.content {
+    background-color: var(--light-grey);
+    display: flex;
+    flex-direction: column;
+    padding: 50px 50px;
+    gap: 10px;
+}
+
+.cur-display-header {
+    color: var(--white);
+    font-size: 2rem;
+    font-weight: 900;
+}
+
+.add-task {
+    padding: 10px;
+    background-color: var(--light-grey);
+    color: var(--white);
+    font-size: 1rem;
+    border: 1px solid var(--ds-border);
+}
+
+.add-task:hover, .new-task:hover {
+    cursor: pointer;
+    background-color: var(--dark-grey);
+    /* border: 1px solid var(--dark-grey); */
+}
+
+dialog {
+    background-color: var(--light-grey);
+    color: var(--white);
+}
+
+#addTaskForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.new-task {
+    display:flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: var(--light-grey);
+    color: var(--white);
+    font-size: 1rem;
+    border: 1px solid var(--ds-border);
+}
+
+.left-side-task,.right-side-task {
+    display:flex;
+    gap: 1.5vw;
+    align-items: center;
+}
+
+.complete-task-btn {
+    border: 1px solid var(--white);
+    background-color: var(--light-grey);
+    display:block;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}
+
+.complete-task {
+    background-color: var(--white);
+}
+
+::backdrop {
+    background-color: black;
+    opacity: 0.75;
+  }
