@@ -1,6 +1,7 @@
 :root {
     --light-grey: rgba(40,45,52,255);
     --dark-grey: rgba(29,33,37,255);
+    --complete-task-grey: gray;
     --ds-border: #A6C5E229;
     --white: white;
 }
@@ -111,10 +112,30 @@ dialog {
     color: var(--white);
 }
 
+fieldset {
+    border: none;
+}
+
 #addTaskForm {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    font-family: 'Roboto','Helvetica';
+}
+
+legend {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.input_title,.input_description,.input_duedate {
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+}
+
+#title {
+    width: 100%;
 }
 
 .new-task {
@@ -150,3 +171,8 @@ dialog {
     background-color: black;
     opacity: 0.75;
   }
+
+.task-completed {
+    color: var(--complete-task-grey);
+    text-decoration: line-through;
+}

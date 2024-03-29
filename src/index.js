@@ -126,6 +126,7 @@ addTaskForm.addEventListener("submit", (e) => {
 
     // for onclick
     let taskDescription = document.createElement('div');
+    console.log(addTaskForm.description.value)
     
     left.appendChild(completeTaskBtn);
     left.appendChild(taskName);
@@ -137,6 +138,20 @@ addTaskForm.addEventListener("submit", (e) => {
     taskName.innerHTML = addTaskForm.title.value;
     taskDueDate.innerHTML = 'Due: ' + addTaskForm.duedate.value;
     taskPriority.innerHTML = 'Priority: ' + addTaskForm.priority.value;
+
+    completeTaskBtn.addEventListener("click", () => {
+        if (completeTaskBtn.classList.contains('complete-task')) {
+            completeTaskBtn.classList.remove('complete-task')
+            completeTaskBtn.innerHTML = ''
+            right.classList.remove('task-completed')
+            taskName.classList.remove('task-completed')
+        } else {
+            completeTaskBtn.classList.add('complete-task')
+            completeTaskBtn.innerHTML = '✓'
+            right.classList.add('task-completed')
+            taskName.classList.add('task-completed')
+        }
+    })
     content.appendChild(newTask);
 });
 
@@ -144,8 +159,13 @@ completeTaskBtn.addEventListener("click", () => {
     if (completeTaskBtn.classList.contains('complete-task')) {
         completeTaskBtn.classList.remove('complete-task')
         completeTaskBtn.innerHTML = ''
+        right.classList.remove('task-completed')
+        taskName.classList.remove('task-completed')
     } else {
         completeTaskBtn.classList.add('complete-task')
         completeTaskBtn.innerHTML = '✓'
+        right.classList.add('task-completed')
+        taskName.classList.add('task-completed')
     }
 })
+
