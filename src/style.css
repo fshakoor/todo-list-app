@@ -101,10 +101,19 @@ body {
     border: 1px solid var(--ds-border);
 }
 
-.add-task:hover, .new-task:hover {
+.add-task:hover, .closeBtn:hover {
     cursor: pointer;
     background-color: var(--dark-grey);
     /* border: 1px solid var(--dark-grey); */
+}
+
+.new-task:hover {
+    background-color: var(--dark-grey);
+}
+
+.task-name:hover {
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 dialog {
@@ -175,4 +184,22 @@ legend {
 .task-completed {
     color: var(--complete-task-grey);
     text-decoration: line-through;
+}
+
+.modal-task-description[open] {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+}
+
+.title-text,.description-text {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.closeBtn {
+    border: 1px solid var(--white);
+    background-color: var(--light-grey);
+    color: var(--white);
+    
 }

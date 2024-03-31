@@ -1,8 +1,7 @@
 import './style.css';
 
 // TODO:
-// - Form submit adds task to page
-// - Clicking on a task brings up a description vie
+// - Clicking on a task's NAME brings up a description view
 // - Checking off a task is toggleable
 // - Checking off a task crosses out the title and greys out other text
 // - Clicking on view will clear the current view and bring up the new view
@@ -101,6 +100,7 @@ completeTaskBtn.innerHTML = '';
 taskName.innerHTML = "Fold Clothes";
 taskDueDate.innerHTML = "Due: 2024-02-04";
 taskPriority.innerHTML = "Priority: Low";
+taskDescription.innerHTML = "Fold all clothes on the bed!";
 content.appendChild(newTask)
 
 closeButton.addEventListener("click", () => {
@@ -155,6 +155,7 @@ addTaskForm.addEventListener("submit", (e) => {
     content.appendChild(newTask);
 });
 
+// Checks off a task
 completeTaskBtn.addEventListener("click", () => {
     if (completeTaskBtn.classList.contains('complete-task')) {
         completeTaskBtn.classList.remove('complete-task')
@@ -169,3 +170,37 @@ completeTaskBtn.addEventListener("click", () => {
     }
 })
 
+// Show's task's description
+taskName.addEventListener('click', () => {
+    let showTaskDescription = document.createElement("dialog");
+    showTaskDescription.classList.add('modal-task-description')
+
+    let expandedTaskTitle = document.createElement('div');
+    let expandedTaskDescription = document.createElement('div');
+    let closeTaskDescriptionButton = document.createElement('button');
+
+    let titleText = document.createElement('div');
+    titleText.innerText = 'Title'
+    titleText.classList.add('title-text');
+    let descriptionText = document.createElement('div');
+    descriptionText.innerText = 'Notes'
+    descriptionText.classList.add('description-text');
+
+    expandedTaskTitle.innerHTML = taskName.innerHTML;
+    expandedTaskDescription.innerHTML = taskDescription.innerHTML;
+    closeTaskDescriptionButton.innerHTML = 'Close';
+    closeTaskDescriptionButton.classList.add('closeBtn')
+
+    showTaskDescription.appendChild(titleText)
+    showTaskDescription.appendChild(expandedTaskTitle)
+    showTaskDescription.appendChild(descriptionText)
+    showTaskDescription.appendChild(expandedTaskDescription)
+    showTaskDescription.appendChild(closeTaskDescriptionButton)
+    main.appendChild(showTaskDescription);
+
+    showTaskDescription.showModal();
+
+    closeTaskDescriptionButton.addEventListener('click', () => {
+        showTaskDescription.close();
+    })
+})
