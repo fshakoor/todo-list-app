@@ -12,6 +12,9 @@
     /* font-weight: 600; */
     /* font-style: normal; */
   }
+* {
+    font-family: 'Roboto','Helvetica';
+}
 
 body {
     height: 100vh;
@@ -101,7 +104,7 @@ body {
     border: 1px solid var(--ds-border);
 }
 
-.add-task:hover, .closeBtn:hover {
+.add-task:hover, .closeBtn:hover, .add:hover {
     cursor: pointer;
     background-color: var(--dark-grey);
     /* border: 1px solid var(--dark-grey); */
@@ -141,10 +144,6 @@ legend {
     display: flex;
     flex-direction: column;
     gap: 1vh;
-}
-
-#title {
-    width: 100%;
 }
 
 .new-task {
@@ -190,6 +189,18 @@ legend {
     display: flex;
     flex-direction: column;
     gap: 2vh;
+    width: 30vw;
+}
+
+.modal-add-project[open] {
+    display: flex;
+    gap: 2vh;
+}
+
+.project-title-input-container {
+    display: flex;
+    gap: 2vh;
+    /* width: 30vw; */
 }
 
 .title-text,.description-text {
@@ -197,9 +208,14 @@ legend {
     font-weight: 600;
 }
 
-.closeBtn {
+.closeBtn, .add {
     border: 1px solid var(--white);
     background-color: var(--light-grey);
     color: var(--white);
     
+}
+
+input, textarea {
+    outline: none;
+    border: 1px solid var(--white);
 }

@@ -1,9 +1,6 @@
 import './style.css';
 
-// TODO:
-// - Clicking on a task's NAME brings up a description view
-// - Checking off a task is toggleable
-// - Checking off a task crosses out the title and greys out other text
+// TODO
 // - Clicking on view will clear the current view and bring up the new view
 // - Clicking on a view will highlight it in the sidebar
 // - If date is today or this week, task needs to be stored to add to those views
@@ -40,7 +37,7 @@ projectsDivider.innerText = "Projects"
 
 const addProjectBtn = document.createElement('button');
 addProjectBtn.classList.add('btn');
-addProjectBtn.innerText = "Add Project"
+addProjectBtn.innerText = "+ Add Project"
 
 const content = document.createElement('div');
 content.classList.add('content');
@@ -123,10 +120,6 @@ addTaskForm.addEventListener("submit", (e) => {
     taskDueDate.classList.add('task-due-date');
     let taskPriority = document.createElement('div');
     taskPriority.classList.add('task-priority');
-
-    // for onclick
-    let taskDescription = document.createElement('div');
-    console.log(addTaskForm.description.value)
     
     left.appendChild(completeTaskBtn);
     left.appendChild(taskName);
@@ -151,6 +144,39 @@ addTaskForm.addEventListener("submit", (e) => {
             right.classList.add('task-completed')
             taskName.classList.add('task-completed')
         }
+    })
+    taskName.addEventListener('click', () => {
+        let showTaskDescription = document.createElement("dialog");
+        showTaskDescription.classList.add('modal-task-description')
+    
+        let expandedTaskTitle = document.createElement('div');
+        let expandedTaskDescription = document.createElement('div');
+        let closeTaskDescriptionButton = document.createElement('button');
+    
+        let titleText = document.createElement('div');
+        titleText.innerText = 'Title'
+        titleText.classList.add('title-text');
+        let descriptionText = document.createElement('div');
+        descriptionText.innerText = 'Notes'
+        descriptionText.classList.add('description-text');
+    
+        expandedTaskTitle.innerHTML = addTaskForm.title.value;
+        expandedTaskDescription.innerHTML = addTaskForm.description.value;
+        closeTaskDescriptionButton.innerHTML = 'Close';
+        closeTaskDescriptionButton.classList.add('closeBtn')
+    
+        showTaskDescription.appendChild(titleText)
+        showTaskDescription.appendChild(expandedTaskTitle)
+        showTaskDescription.appendChild(descriptionText)
+        showTaskDescription.appendChild(expandedTaskDescription)
+        showTaskDescription.appendChild(closeTaskDescriptionButton)
+        main.appendChild(showTaskDescription);
+    
+        showTaskDescription.showModal();
+    
+        closeTaskDescriptionButton.addEventListener('click', () => {
+            showTaskDescription.close();
+        })
     })
     content.appendChild(newTask);
 });
@@ -203,4 +229,91 @@ taskName.addEventListener('click', () => {
     closeTaskDescriptionButton.addEventListener('click', () => {
         showTaskDescription.close();
     })
+})
+
+// For adding a new project
+addProjectBtn.addEventListener('click', () => {
+    let titleAndInputContainer = document.createElement('div');
+    titleAndInputContainer.classList.add('project-title-input-container');
+
+    let showProjectModal = document.createElement("dialog");
+    showProjectModal.classList.add('modal-add-project')
+    let addProjectButton = document.createElement('button');
+
+    let titleText = document.createElement('div');
+    titleText.innerText = 'Title:'
+    titleText.classList.add('title-text');
+    let nameNewProject = document.createElement('input');
+    nameNewProject.id = 'title';
+
+    addProjectButton.innerHTML = 'Add Project';
+    addProjectButton.classList.add('closeBtn');
+    addProjectBtn.type = 'submit';
+
+    titleAndInputContainer.appendChild(titleText)
+    titleAndInputContainer.appendChild(nameNewProject)
+    showProjectModal.appendChild(titleAndInputContainer)
+
+    showProjectModal.appendChild(addProjectButton)
+    main.appendChild(showProjectModal);
+
+    showProjectModal.showModal();
+
+    addProjectButton.addEventListener('click', () => {
+        showProjectModal.close();
+        createProject(nameNewProject.value)
+    })
+})
+
+function createProject(projectName) {
+    const newProject = document.createElement('button');
+    newProject.classList.add('btn');
+    newProject.innerText = projectName
+    sidebar.appendChild(newProject);
+
+    newProject.addEventListener('click', () => {
+        curDisplayHeader.innerHTML = projectName;
+        if (todayBtn.classList.contains('active') || thisWeekBtn.classList.contains('active') || inboxBtn.classList.contains('active'))
+        {
+            newProject.classList.add('active')
+            inboxBtn.classList.remove('active')
+            thisWeekBtn.classList.remove('active')
+            todayBtn.classList.remove('active')
+        }
+    })
+}
+
+// sidebar.childNodes.forEach(element => {
+//     if (element.classList.contains('active')) {console.log(true)} else console.log(false)
+// });
+
+inboxBtn.addEventListener('click', () => {
+    curDisplayHeader.innerHTML = inboxBtn.innerText;
+    
+    if (todayBtn.classList.contains('active') || thisWeekBtn.classList.contains('active'))
+    {
+        inboxBtn.classList.add('active')
+        thisWeekBtn.classList.remove('active')
+        todayBtn.classList.remove('active')
+    }
+})
+
+todayBtn.addEventListener('click', () => {
+    curDisplayHeader.innerHTML = todayBtn.innerText;
+    if (inboxBtn.classList.contains('active') || thisWeekBtn.classList.contains('active'))
+    {
+        todayBtn.classList.add('active')
+        thisWeekBtn.classList.remove('active')
+        inboxBtn.classList.remove('active')
+    }
+})
+
+thisWeekBtn.addEventListener('click', () => {
+    curDisplayHeader.innerHTML = thisWeekBtn.innerText;
+    if (inboxBtn.classList.contains('active') || todayBtn.classList.contains('active'))
+    {
+        thisWeekBtn.classList.add('active')
+        todayBtn.classList.remove('active')
+        inboxBtn.classList.remove('active')
+    }
 })
