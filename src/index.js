@@ -273,47 +273,49 @@ function createProject(projectName) {
 
     newProject.addEventListener('click', () => {
         curDisplayHeader.innerHTML = projectName;
-        if (todayBtn.classList.contains('active') || thisWeekBtn.classList.contains('active') || inboxBtn.classList.contains('active'))
-        {
-            newProject.classList.add('active')
-            inboxBtn.classList.remove('active')
-            thisWeekBtn.classList.remove('active')
-            todayBtn.classList.remove('active')
-        }
+
+        sidebar.childNodes.forEach(element => {
+            if (element.classList.contains('active')) {
+                element.classList.remove('active')
+            }
+        });
+    
+        newProject.classList.add('active');
     })
 }
 
-// sidebar.childNodes.forEach(element => {
-//     if (element.classList.contains('active')) {console.log(true)} else console.log(false)
-// });
-
 inboxBtn.addEventListener('click', () => {
     curDisplayHeader.innerHTML = inboxBtn.innerText;
-    
-    if (todayBtn.classList.contains('active') || thisWeekBtn.classList.contains('active'))
-    {
-        inboxBtn.classList.add('active')
-        thisWeekBtn.classList.remove('active')
-        todayBtn.classList.remove('active')
-    }
+
+    sidebar.childNodes.forEach(element => {
+        if (element.classList.contains('active')) {
+            element.classList.remove('active')
+        }
+    });
+
+    inboxBtn.classList.add('active');
 })
 
 todayBtn.addEventListener('click', () => {
     curDisplayHeader.innerHTML = todayBtn.innerText;
-    if (inboxBtn.classList.contains('active') || thisWeekBtn.classList.contains('active'))
-    {
-        todayBtn.classList.add('active')
-        thisWeekBtn.classList.remove('active')
-        inboxBtn.classList.remove('active')
-    }
+
+    sidebar.childNodes.forEach(element => {
+        if (element.classList.contains('active')) {
+            element.classList.remove('active')
+        }
+    });
+
+    todayBtn.classList.add('active');
 })
 
 thisWeekBtn.addEventListener('click', () => {
     curDisplayHeader.innerHTML = thisWeekBtn.innerText;
-    if (inboxBtn.classList.contains('active') || todayBtn.classList.contains('active'))
-    {
-        thisWeekBtn.classList.add('active')
-        todayBtn.classList.remove('active')
-        inboxBtn.classList.remove('active')
-    }
+
+    sidebar.childNodes.forEach(element => {
+        if (element.classList.contains('active')) {
+            element.classList.remove('active')
+        }
+    });
+
+    thisWeekBtn.classList.add('active');
 })
