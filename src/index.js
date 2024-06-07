@@ -1,10 +1,8 @@
 import './style.css';
 
 // TODO
-// - Clicking on view will clear the current view and bring up the new view
-// - If date is today or this week, task needs to be stored to add to those views
-// - Delete a task
-// - Projects
+// - Edit a task
+// - Projects (clear all other tasks, tasks added to a project only stay in there)
 // - Local storage?
 // - seperate and export into modules
 
@@ -77,6 +75,8 @@ let newTask = document.createElement('div');
 newTask.classList.add('new-task');
 let completeTaskBtn = document.createElement('button');
 completeTaskBtn.classList.add('complete-task-btn');
+let deleteTaskBtn = document.createElement('button');
+deleteTaskBtn.classList.add('delete-task-btn');
 let taskName = document.createElement('div');
 taskName.classList.add('task-name');
 let taskDueDate = document.createElement('div');
@@ -91,9 +91,11 @@ left.appendChild(completeTaskBtn);
 left.appendChild(taskName);
 right.appendChild(taskDueDate);
 right.appendChild(taskPriority);
+right.append(deleteTaskBtn);
 newTask.appendChild(left);
 newTask.appendChild(right);
 completeTaskBtn.innerHTML = '';
+deleteTaskBtn.innerHTML = '✕';
 taskName.innerHTML = "Fold Clothes";
 taskDueDate.innerHTML = "Due: 2024-02-04";
 taskPriority.innerHTML = "Priority: Low";
@@ -114,6 +116,8 @@ addTaskForm.addEventListener("submit", (e) => {
     newTask.classList.add('new-task');
     let completeTaskBtn = document.createElement('button');
     completeTaskBtn.classList.add('complete-task-btn');
+    let deleteTaskBtn = document.createElement('button');
+    deleteTaskBtn.classList.add('delete-task-btn');
     let taskName = document.createElement('div');
     taskName.classList.add('task-name');
     let taskDueDate = document.createElement('div');
@@ -125,9 +129,11 @@ addTaskForm.addEventListener("submit", (e) => {
     left.appendChild(taskName);
     right.appendChild(taskDueDate);
     right.appendChild(taskPriority);
+    right.append(deleteTaskBtn);
     newTask.appendChild(left);
     newTask.appendChild(right);
     completeTaskBtn.innerHTML = ' ';
+    deleteTaskBtn.innerHTML = '✕';
     taskName.innerHTML = addTaskForm.title.value;
     taskDueDate.innerHTML = 'Due: ' + addTaskForm.duedate.value;
     taskPriority.innerHTML = 'Priority: ' + addTaskForm.priority.value;
@@ -145,6 +151,7 @@ addTaskForm.addEventListener("submit", (e) => {
             taskName.classList.add('task-completed')
         }
     })
+
     taskName.addEventListener('click', () => {
         let showTaskDescription = document.createElement("dialog");
         showTaskDescription.classList.add('modal-task-description')
@@ -179,9 +186,10 @@ addTaskForm.addEventListener("submit", (e) => {
         })
     })
     content.appendChild(newTask);
-    console.log(addTaskForm.duedate.value);
-    // current task: if the date = today, then give it a "today" attribute. then go into the today view event listener and loop through tasks
-    // to only show today tasks and hide all the other ones
+
+    deleteTaskBtn.addEventListener("click", () => {
+        content.removeChild(newTask)
+    })
     
     let dateInput = addTaskForm.duedate.value;
     let dateInputObj = new Date(dateInput);
@@ -191,10 +199,6 @@ addTaskForm.addEventListener("submit", (e) => {
 
     const endDate = new Date(today);
     endDate.setDate(today.getDate() + 7);
-    
-    console.log(dateInputObj.toDateString());
-    console.log(today.toDateString());
-    console.log(endDate.toDateString());
     
     const isToday = (
       today.getFullYear() === dateInputObj.getFullYear() &&
@@ -229,6 +233,10 @@ completeTaskBtn.addEventListener("click", () => {
         right.classList.add('task-completed')
         taskName.classList.add('task-completed')
     }
+})
+
+deleteTaskBtn.addEventListener("click", () => {
+    content.removeChild(newTask)
 })
 
 // Show's task's description

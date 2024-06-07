@@ -110,8 +110,12 @@ body {
     /* border: 1px solid var(--dark-grey); */
 }
 
+.complete-task-btn:hover {
+    cursor: pointer;
+}
+
 .new-task:hover {
-    background-color: var(--dark-grey);
+    box-shadow: 5px 5px 10px rgba(29,33,37,0.5);
 }
 
 .task-name:hover {
@@ -222,4 +226,23 @@ input, textarea {
 
 .hidden {
     display: none;
+}
+
+.delete-task-btn {
+    border: none;
+    background-color: transparent;
+    display:block;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    color: var(--white);
+    opacity: 50%;
+    font-size: 1.1rem;
+}
+
+.delete-task-btn:hover {
+    background-color: transparent;
+    font-weight: 900;
+    opacity: 100%;
+    cursor: pointer;
 }
