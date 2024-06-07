@@ -207,7 +207,10 @@ addTaskForm.addEventListener("submit", (e) => {
         dateInputObj <= endDate
       );
 
-    if (isToday) {newTask.classList.add('today')}
+    if (isToday) {
+        newTask.classList.add('today')
+        newTask.classList.add('thisWeek')
+    }
     if (isWithinWeek) {newTask.classList.add('thisWeek')}
     
     addTaskForm.reset();
@@ -325,6 +328,10 @@ inboxBtn.addEventListener('click', () => {
         }
     });
 
+    content.childNodes.forEach(element => {
+        if (element.classList.contains('hidden')) {element.classList.remove('hidden')};
+    })
+
     inboxBtn.classList.add('active');
 })
 
@@ -338,6 +345,11 @@ todayBtn.addEventListener('click', () => {
     });
 
     todayBtn.classList.add('active');
+
+    content.childNodes.forEach(element => {
+        if (element.classList.contains('new-task') && element.classList.contains('today')) {element.classList.remove('hidden')}
+        else if (element.classList.contains('new-task')) {element.classList.add('hidden')};
+    })
 })
 
 thisWeekBtn.addEventListener('click', () => {
@@ -350,4 +362,9 @@ thisWeekBtn.addEventListener('click', () => {
     });
 
     thisWeekBtn.classList.add('active');
+
+    content.childNodes.forEach(element => {
+        if (element.classList.contains('new-task') && element.classList.contains('thisWeek')) {element.classList.remove('hidden')}
+        else if (element.classList.contains('new-task')) {element.classList.add('hidden')};
+    })
 })
