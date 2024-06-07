@@ -2,8 +2,8 @@ import './style.css';
 
 // TODO
 // - Clicking on view will clear the current view and bring up the new view
-// - Clicking on a view will highlight it in the sidebar
 // - If date is today or this week, task needs to be stored to add to those views
+// - Delete a task
 // - Projects
 // - Local storage?
 // - seperate and export into modules
@@ -29,7 +29,7 @@ todayBtn.innerText = "Today"
 
 const thisWeekBtn = document.createElement('button');
 thisWeekBtn.classList.add('btn');
-thisWeekBtn.innerText = "This Week"
+thisWeekBtn.innerText = "Next 7 Days"
 
 const projectsDivider = document.createElement('div');
 projectsDivider.classList.add('project-divider');
@@ -179,6 +179,38 @@ addTaskForm.addEventListener("submit", (e) => {
         })
     })
     content.appendChild(newTask);
+    console.log(addTaskForm.duedate.value);
+    // current task: if the date = today, then give it a "today" attribute. then go into the today view event listener and loop through tasks
+    // to only show today tasks and hide all the other ones
+    
+    let dateInput = addTaskForm.duedate.value;
+    let dateInputObj = new Date(dateInput);
+    const today = new Date();
+
+    dateInputObj.setMinutes(dateInputObj.getMinutes() + dateInputObj.getTimezoneOffset());
+
+    const endDate = new Date(today);
+    endDate.setDate(today.getDate() + 7);
+    
+    console.log(dateInputObj.toDateString());
+    console.log(today.toDateString());
+    console.log(endDate.toDateString());
+    
+    const isToday = (
+      today.getFullYear() === dateInputObj.getFullYear() &&
+      today.getMonth() === dateInputObj.getMonth() &&
+      today.getDate() === dateInputObj.getDate()
+    );
+
+    const isWithinWeek = (
+        dateInputObj >= today &&
+        dateInputObj <= endDate
+      );
+
+    if (isToday) {newTask.classList.add('today')}
+    if (isWithinWeek) {newTask.classList.add('thisWeek')}
+    
+    addTaskForm.reset();
 });
 
 // Checks off a task
