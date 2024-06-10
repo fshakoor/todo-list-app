@@ -1,7 +1,7 @@
 import './style.css';
 
 // TODO
-// - Edit a task
+// - Form should not submit until required fields done
 // - Projects (clear all other tasks, tasks added to a project only stay in there)
 // - Local storage?
 // - seperate and export into modules
@@ -146,6 +146,8 @@ addTaskForm.addEventListener("submit", (e) => {
     taskDueDate.innerHTML = 'Due: ' + addTaskForm.duedate.value;
     taskPriority.innerHTML = 'Priority: ' + addTaskForm.priority.value;
 
+    let taskDescription = addTaskForm.description.value;
+
     completeTaskBtn.addEventListener("click", () => {
         if (completeTaskBtn.classList.contains('complete-task')) {
             completeTaskBtn.classList.remove('complete-task')
@@ -178,10 +180,8 @@ addTaskForm.addEventListener("submit", (e) => {
         descriptionText.classList.add('description-text');
 
         expandedTaskTitle.innerHTML = taskName.innerHTML;
-        expandedTaskDescription.innerHTML = taskDescription.innerHTML;
-    
-        // expandedTaskTitle.innerHTML = addTaskForm.title.value;
-        // expandedTaskDescription.innerHTML = addTaskForm.description.value;
+        expandedTaskDescription.innerHTML = taskDescription;
+
         closeTaskDescriptionButton.innerHTML = 'Close';
         closeTaskDescriptionButton.classList.add('closeBtn')
     
@@ -231,7 +231,6 @@ addTaskForm.addEventListener("submit", (e) => {
                 </form>
             </fieldset>
         `;
-    
         
         // Append the dialog to the body
         document.body.appendChild(editDialog);
@@ -245,16 +244,12 @@ addTaskForm.addEventListener("submit", (e) => {
             e.preventDefault();
             taskName.innerHTML = form.querySelector('#title').value
             taskDueDate.innerHTML = 'Due: ' + form.querySelector('#duedate').value;
-    
             const formData = new FormData(form);
             const priorityValue = formData.get('priority');
             taskPriority.innerHTML = 'Priority: ' + priorityValue;
-
             expandedTaskTitle.innerHTML = form.querySelector('#title').value
-            expandedTaskDescription.innerHTML = form.querySelector('#description').value
-    
-            taskDescription.innerHTML = form.querySelector('#description').value;
-    
+            taskDescription = form.querySelector('#description').value
+            expandedTaskDescription.innerHTML = taskDescription;
             editDialog.close();
         });
     });
