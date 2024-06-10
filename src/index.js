@@ -77,6 +77,8 @@ let completeTaskBtn = document.createElement('button');
 completeTaskBtn.classList.add('complete-task-btn');
 let deleteTaskBtn = document.createElement('button');
 deleteTaskBtn.classList.add('delete-task-btn');
+let editTaskBtn = document.createElement('button');
+editTaskBtn.classList.add('edit-task-btn');
 let taskName = document.createElement('div');
 taskName.classList.add('task-name');
 let taskDueDate = document.createElement('div');
@@ -91,10 +93,12 @@ left.appendChild(completeTaskBtn);
 left.appendChild(taskName);
 right.appendChild(taskDueDate);
 right.appendChild(taskPriority);
+right.append(editTaskBtn);
 right.append(deleteTaskBtn);
 newTask.appendChild(left);
 newTask.appendChild(right);
 completeTaskBtn.innerHTML = '';
+editTaskBtn.innerHTML = '✎';
 deleteTaskBtn.innerHTML = '✕';
 taskName.innerHTML = "Fold Clothes";
 taskDueDate.innerHTML = "Due: 2024-02-04";
@@ -117,6 +121,8 @@ addTaskForm.addEventListener("submit", (e) => {
     let completeTaskBtn = document.createElement('button');
     completeTaskBtn.classList.add('complete-task-btn');
     let deleteTaskBtn = document.createElement('button');
+    let editTaskBtn = document.createElement('button');
+    editTaskBtn.classList.add('edit-task-btn');
     deleteTaskBtn.classList.add('delete-task-btn');
     let taskName = document.createElement('div');
     taskName.classList.add('task-name');
@@ -129,10 +135,12 @@ addTaskForm.addEventListener("submit", (e) => {
     left.appendChild(taskName);
     right.appendChild(taskDueDate);
     right.appendChild(taskPriority);
+    right.append(editTaskBtn);
     right.append(deleteTaskBtn);
     newTask.appendChild(left);
     newTask.appendChild(right);
     completeTaskBtn.innerHTML = ' ';
+    editTaskBtn.innerHTML = '✎';
     deleteTaskBtn.innerHTML = '✕';
     taskName.innerHTML = addTaskForm.title.value;
     taskDueDate.innerHTML = 'Due: ' + addTaskForm.duedate.value;
@@ -151,13 +159,15 @@ addTaskForm.addEventListener("submit", (e) => {
             taskName.classList.add('task-completed')
         }
     })
+    let expandedTaskTitle = document.createElement('div');
+    expandedTaskTitle.classList.add('expanded-task-title')
+    let expandedTaskDescription = document.createElement('div');
+    expandedTaskTitle.classList.add('expanded-desc')
 
     taskName.addEventListener('click', () => {
         let showTaskDescription = document.createElement("dialog");
         showTaskDescription.classList.add('modal-task-description')
     
-        let expandedTaskTitle = document.createElement('div');
-        let expandedTaskDescription = document.createElement('div');
         let closeTaskDescriptionButton = document.createElement('button');
     
         let titleText = document.createElement('div');
@@ -166,9 +176,12 @@ addTaskForm.addEventListener("submit", (e) => {
         let descriptionText = document.createElement('div');
         descriptionText.innerText = 'Notes'
         descriptionText.classList.add('description-text');
+
+        expandedTaskTitle.innerHTML = taskName.innerHTML;
+        expandedTaskDescription.innerHTML = taskDescription.innerHTML;
     
-        expandedTaskTitle.innerHTML = addTaskForm.title.value;
-        expandedTaskDescription.innerHTML = addTaskForm.description.value;
+        // expandedTaskTitle.innerHTML = addTaskForm.title.value;
+        // expandedTaskDescription.innerHTML = addTaskForm.description.value;
         closeTaskDescriptionButton.innerHTML = 'Close';
         closeTaskDescriptionButton.classList.add('closeBtn')
     
@@ -185,6 +198,67 @@ addTaskForm.addEventListener("submit", (e) => {
             showTaskDescription.close();
         })
     })
+
+    editTaskBtn.addEventListener('click', () => {
+        // Create the dialog element
+        const editDialog = document.createElement('dialog');
+        editDialog.className = 'editDialog';
+    
+        // Create the form element inside the dialog
+        editDialog.innerHTML = `
+            <fieldset>
+                <form action="" method="GET" id="addTaskForm">
+                    <legend>Edit Task</legend>
+                    <div class="input_title">
+                        <label for="title">New Title</label>
+                        <input id="title" type="text" name="title" required />
+                    </div>
+                    <div class="input_description">
+                        <label for="description">New Description</label>
+                        <textarea id="description" name="description" rows="4" cols="50"></textarea>
+                    </div>
+                    <div class="input_duedate">
+                        <label for="duedate">New Due Date</label>
+                        <input id="duedate" type="date" name="duedate" required />
+                    </div>
+                    <div class="input_priority">
+                        <label for="priority">New Priority</label>
+                        <input id="low" type="radio" name="priority" value="Low" required />Low
+                        <input id="medium" type="radio" name="priority" value="Medium" required />Medium
+                        <input id="high" type="radio" name="priority" value="High" required />High
+                    </div>                    
+                    <button autofocus type="submit" class="updateSubmit">Update</button>
+                </form>
+            </fieldset>
+        `;
+    
+        
+        // Append the dialog to the body
+        document.body.appendChild(editDialog);
+        
+        // Show the dialog
+        editDialog.showModal();
+        
+        // Handle form submission
+        const form = editDialog.querySelector('#addTaskForm');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            taskName.innerHTML = form.querySelector('#title').value
+            taskDueDate.innerHTML = 'Due: ' + form.querySelector('#duedate').value;
+    
+            const formData = new FormData(form);
+            const priorityValue = formData.get('priority');
+            taskPriority.innerHTML = 'Priority: ' + priorityValue;
+
+            expandedTaskTitle.innerHTML = form.querySelector('#title').value
+            expandedTaskDescription.innerHTML = form.querySelector('#description').value
+    
+            taskDescription.innerHTML = form.querySelector('#description').value;
+    
+            editDialog.close();
+        });
+    });
+
     content.appendChild(newTask);
 
     deleteTaskBtn.addEventListener("click", () => {
@@ -220,6 +294,7 @@ addTaskForm.addEventListener("submit", (e) => {
     addTaskForm.reset();
 });
 
+
 // Checks off a task
 completeTaskBtn.addEventListener("click", () => {
     if (completeTaskBtn.classList.contains('complete-task')) {
@@ -239,13 +314,13 @@ deleteTaskBtn.addEventListener("click", () => {
     content.removeChild(newTask)
 })
 
+let expandedTaskDescription = document.createElement('div');
 // Show's task's description
 taskName.addEventListener('click', () => {
     let showTaskDescription = document.createElement("dialog");
     showTaskDescription.classList.add('modal-task-description')
 
     let expandedTaskTitle = document.createElement('div');
-    let expandedTaskDescription = document.createElement('div');
     let closeTaskDescriptionButton = document.createElement('button');
 
     let titleText = document.createElement('div');
@@ -273,6 +348,65 @@ taskName.addEventListener('click', () => {
         showTaskDescription.close();
     })
 })
+
+editTaskBtn.addEventListener('click', () => {
+    // Create the dialog element
+    const editDialog = document.createElement('dialog');
+    editDialog.className = 'editDialog';
+
+    // Create the form element inside the dialog
+    editDialog.innerHTML = `
+        <fieldset>
+            <form action="" method="GET" id="addTaskForm">
+                <legend>Edit Task</legend>
+                <div class="input_title">
+                    <label for="title">New Title</label>
+                    <input id="title" type="text" name="title" required />
+                </div>
+                <div class="input_description">
+                    <label for="description">New Description</label>
+                    <textarea id="description" name="description" rows="4" cols="50"></textarea>
+                </div>
+                <div class="input_duedate">
+                    <label for="duedate">New Due Date</label>
+                    <input id="duedate" type="date" name="duedate" required />
+                </div>
+                <div class="input_priority">
+                    <label for="priority">New Priority</label>
+                    <input id="low" type="radio" name="priority" value="Low" required />Low
+                    <input id="medium" type="radio" name="priority" value="Medium" required />Medium
+                    <input id="high" type="radio" name="priority" value="High" required />High
+                </div>                    
+                <button autofocus type="submit" class="updateSubmit">Update</button>
+            </form>
+        </fieldset>
+    `;
+
+    
+    // Append the dialog to the body
+    document.body.appendChild(editDialog);
+    
+    // Show the dialog
+    editDialog.showModal();
+    
+    // Handle form submission
+    const form = editDialog.querySelector('#addTaskForm');
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        taskName.innerHTML = form.querySelector('#title').value
+        taskDueDate.innerHTML = 'Due: ' + form.querySelector('#duedate').value;
+
+        const formData = new FormData(form);
+        const priorityValue = formData.get('priority');
+        taskPriority.innerHTML = 'Priority: ' + priorityValue;
+
+        taskDescription.innerHTML = form.querySelector('#description').value;
+        expandedTaskDescription.innerHTML = form.querySelector('#description').value;
+
+        editDialog.close();
+    });
+});
+
 
 // For adding a new project
 addProjectBtn.addEventListener('click', () => {

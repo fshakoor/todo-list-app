@@ -162,7 +162,7 @@ legend {
 
 .left-side-task,.right-side-task {
     display:flex;
-    gap: 1.5vw;
+    gap: 1.3vw;
     align-items: center;
 }
 
@@ -228,7 +228,7 @@ input, textarea {
     display: none;
 }
 
-.delete-task-btn {
+.delete-task-btn,.edit-task-btn {
     border: none;
     background-color: transparent;
     display:block;
@@ -240,7 +240,7 @@ input, textarea {
     font-size: 1.1rem;
 }
 
-.delete-task-btn:hover {
+.delete-task-btn:hover,.edit-task-btn:hover {
     background-color: transparent;
     font-weight: 900;
     opacity: 100%;
