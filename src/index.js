@@ -1,10 +1,10 @@
 import './style.css';
 
 // TODO
-// - Form should not submit until required fields done
-// - Projects (clear all other tasks, tasks added to a project only stay in there)
+// - Tab descriptions
 // - Local storage?
 // - seperate and export into modules
+// - Form should not submit until required fields done
 
 let isEmpty = true;
 const main = document.querySelector('.main');
@@ -118,6 +118,10 @@ addTaskForm.addEventListener("submit", (e) => {
     right.classList.add('right-side-task')
     let newTask = document.createElement('div');
     newTask.classList.add('new-task');
+    if (curDisplayHeader.innerHTML != 'Inbox' && curDisplayHeader.innerHTML != 'Today' && curDisplayHeader.innerHTML != 'Next 7 Days') {
+        newTask.classList.add('project-task') // generic tag to distinguish projects from the main 3 tabs
+        newTask.classList.add(curDisplayHeader.innerHTML) // specific tag to distinguish project tabs between each other
+    };
     let completeTaskBtn = document.createElement('button');
     completeTaskBtn.classList.add('complete-task-btn');
     let deleteTaskBtn = document.createElement('button');
@@ -453,6 +457,11 @@ function createProject(projectName) {
         });
     
         newProject.classList.add('active');
+
+        content.childNodes.forEach(element => {
+            if (element.classList.contains('new-task') && element.classList.contains('project-task') && element.classList.contains(curDisplayHeader.innerHTML)) {element.classList.remove('hidden')}
+            else if (element.classList.contains('new-task')) {element.classList.add('hidden')};
+        })
     })
 }
 
@@ -467,6 +476,7 @@ inboxBtn.addEventListener('click', () => {
 
     content.childNodes.forEach(element => {
         if (element.classList.contains('hidden')) {element.classList.remove('hidden')};
+        if (element.classList.contains('project-task')) {element.classList.add('hidden')};
     })
 
     inboxBtn.classList.add('active');
@@ -486,6 +496,8 @@ todayBtn.addEventListener('click', () => {
     content.childNodes.forEach(element => {
         if (element.classList.contains('new-task') && element.classList.contains('today')) {element.classList.remove('hidden')}
         else if (element.classList.contains('new-task')) {element.classList.add('hidden')};
+
+        if (element.classList.contains('project-task')) {element.classList.add('hidden')};
     })
 })
 
@@ -503,5 +515,7 @@ thisWeekBtn.addEventListener('click', () => {
     content.childNodes.forEach(element => {
         if (element.classList.contains('new-task') && element.classList.contains('thisWeek')) {element.classList.remove('hidden')}
         else if (element.classList.contains('new-task')) {element.classList.add('hidden')};
+
+        if (element.classList.contains('project-task')) {element.classList.add('hidden')};
     })
 })
