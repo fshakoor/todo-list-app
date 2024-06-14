@@ -1,7 +1,6 @@
 import './style.css';
 
 // TODO
-// - Local storage
 // - Form should not submit until required fields done
 
 import { setupTaskListeners, loadTasksFromLocalStorage } from './task.js';
