@@ -1,61 +1,67 @@
+import { saveTasksToLocalStorage, loadTasksFromLocalStorage } from './task.js';
+
 export function setupProjectListeners(addProjectBtn, sidebar, content, curDisplayHeader) {
-    addProjectBtn.addEventListener('click', () => {
-        let titleAndInputContainer = document.createElement('div');
-        titleAndInputContainer.classList.add('project-title-input-container');
+    addProjectBtn.addEventListener("click", () => {
+        let addProjectDialog = document.createElement("dialog");
+        addProjectDialog.innerHTML = `
+            <fieldset>
+                <form action="" method="GET" id="addProjectForm">
+                    <legend>Add New Project</legend>
+                    <div class="input_title">
+                        <label for="projectName">Project Name</label>
+                        <input id="projectName" type="text" name="projectName" required />
+                    </div>
+                    <button autofocus type="submit" class="add">Add</button>
+                </form>
+            </fieldset>
+        `;
+        document.body.appendChild(addProjectDialog);
+        addProjectDialog.showModal();
 
-        let showProjectModal = document.createElement("dialog");
-        showProjectModal.classList.add('modal-add-project');
-        let addProjectButton = document.createElement('button');
+        let addProjectForm = document.getElementById('addProjectForm');
 
-        let titleText = document.createElement('div');
-        titleText.innerText = 'Title:';
-        titleText.classList.add('title-text');
-        let nameNewProject = document.createElement('input');
-        nameNewProject.id = 'title';
-
-        addProjectButton.innerHTML = 'Add Project';
-        addProjectButton.classList.add('closeBtn');
-        addProjectBtn.type = 'submit';
-
-        titleAndInputContainer.appendChild(titleText);
-        titleAndInputContainer.appendChild(nameNewProject);
-        showProjectModal.appendChild(titleAndInputContainer);
-
-        showProjectModal.appendChild(addProjectButton);
-        document.querySelector('.main').appendChild(showProjectModal);
-
-        showProjectModal.showModal();
-
-        addProjectButton.addEventListener('click', () => {
-            showProjectModal.close();
-            createProject(nameNewProject.value, sidebar, content, curDisplayHeader);
+        addProjectForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const projectName = addProjectForm.projectName.value;
+            createProject(projectName, sidebar, content, curDisplayHeader);
+            addProjectDialog.close();
+            saveProjectsToLocalStorage(sidebar);
         });
     });
 }
 
 export function createProject(projectName, sidebar, content, curDisplayHeader) {
-    const newProject = document.createElement('button');
-    newProject.classList.add('btn');
-    newProject.innerText = projectName;
-    sidebar.appendChild(newProject);
+    let newProjectBtn = document.createElement('button');
+    newProjectBtn.classList.add('btn');
+    newProjectBtn.innerText = projectName;
 
-    newProject.addEventListener('click', () => {
+    newProjectBtn.addEventListener('click', () => {
         curDisplayHeader.innerHTML = projectName;
-
-        sidebar.childNodes.forEach(element => {
-            if (element.classList.contains('active')) {
-                element.classList.remove('active');
+        document.querySelectorAll('.new-task').forEach(task => {
+            if (task.classList.contains('project-task') && task.classList.contains(projectName)) {
+                task.style.display = 'flex';
+            } else {
+                task.style.display = 'none';
             }
         });
-    
-        newProject.classList.add('active');
+    });
 
-        content.childNodes.forEach(element => {
-            if (element.classList.contains('new-task') && element.classList.contains('project-task') && element.classList.contains(curDisplayHeader.innerHTML)) {
-                element.classList.remove('hidden');
-            } else if (element.classList.contains('new-task')) {
-                element.classList.add('hidden');
-            }
-        });
+    sidebar.insertBefore(newProjectBtn, sidebar.lastChild);
+}
+
+export function saveProjectsToLocalStorage(sidebar) {
+    const projects = [];
+    sidebar.querySelectorAll('.btn').forEach(btn => {
+        if (!btn.classList.contains('active') && !['Inbox', 'Today', 'Next 7 Days', '+ Add Project'].includes(btn.innerText)) {
+            projects.push(btn.innerText);
+        }
+    });
+    localStorage.setItem('projects', JSON.stringify(projects));
+}
+
+export function loadProjectsFromLocalStorage(sidebar, content, curDisplayHeader) {
+    const projects = JSON.parse(localStorage.getItem('projects')) || [];
+    projects.forEach(projectName => {
+        createProject(projectName, sidebar, content, curDisplayHeader);
     });
 }

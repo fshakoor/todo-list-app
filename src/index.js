@@ -4,8 +4,8 @@ import './style.css';
 // - Local storage
 // - Form should not submit until required fields done
 
-import { setupTaskListeners } from './task.js';
-import { setupProjectListeners, createProject } from './project.js';
+import { setupTaskListeners, loadTasksFromLocalStorage } from './task.js';
+import { setupProjectListeners, loadProjectsFromLocalStorage, createProject } from './project.js';
 import { setupSidebarListeners } from './sidebar.js';
 
 const main = document.querySelector('.main');
@@ -33,6 +33,10 @@ thisWeekBtn.innerText = "Next 7 Days";
 const projectsDivider = document.createElement('div');
 projectsDivider.classList.add('project-divider');
 projectsDivider.innerText = "Projects";
+
+const todosDivider = document.createElement('div');
+todosDivider.classList.add('project-divider');
+todosDivider.innerText = "To-Do";
 
 const addProjectBtn = document.createElement('button');
 addProjectBtn.classList.add('btn');
@@ -81,8 +85,7 @@ task.innerHTML = "+ Add Task";
 task.classList.add('add-task');
 content.appendChild(task);
 
-header.appendChild(headerText);
-main.appendChild(header);
+sidebar.appendChild(todosDivider);
 sidebar.appendChild(inboxBtn);
 sidebar.appendChild(todayBtn);
 sidebar.appendChild(thisWeekBtn);
@@ -94,3 +97,9 @@ main.appendChild(content);
 setupTaskListeners(task, addDialog, content, curDisplayHeader);
 setupProjectListeners(addProjectBtn, sidebar, content, curDisplayHeader);
 setupSidebarListeners(inboxBtn, todayBtn, thisWeekBtn, sidebar, content, curDisplayHeader);
+
+// Load tasks and projects from localStorage on page load
+document.addEventListener('DOMContentLoaded', () => {
+    loadProjectsFromLocalStorage(sidebar, content, curDisplayHeader);
+    loadTasksFromLocalStorage(content);
+});
